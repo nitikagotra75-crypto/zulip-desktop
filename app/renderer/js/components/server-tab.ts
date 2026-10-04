@@ -12,7 +12,8 @@ export type ServerTabProperties = {
   webview: Promise<WebView>;
 } & TabProperties;
 
-const initialOf = (label:string): string =>[...label][0]??"Z";
+// The first character of the realm name, shown in place of a missing icon.
+const initialOf = (label: string): string => [...label][0] ?? "Z";
 
 export default class ServerTab extends Tab {
   webview: Promise<WebView>;
@@ -31,12 +32,16 @@ export default class ServerTab extends Tab {
     this.registerListeners();
     this.$name = this.$el.querySelector(".server-tooltip")!;
     this.$icon = this.$el.querySelector(".server-icons")!;
-    this.$badge = this.$el.querySelector(".server-tab-badge")!;
     this.$altIcon = this.$el.querySelector(".alt-icon")!;
-    this.$icon.addEventListener("load" , () => {
+    this.$badge = this.$el.querySelector(".server-tab-badge")!;
+
+    // Show the icon only once it has loaded, and the initial of the realm
+    // name otherwise, so that a missing or invalid icon never appears as a
+    // broken image.
+    this.$icon.addEventListener("load", () => {
       this.showIcon(this.properties.icon !== defaultIcon);
     });
-    this.$icon.addEventListener("error" , () => {
+    this.$icon.addEventListener("error", () => {
       this.showIcon(false);
     });
   }
@@ -66,8 +71,8 @@ export default class ServerTab extends Tab {
         <div class="server-tab">
           <div class="server-icon alt-icon">
             ${initialOf(this.properties.label)}
-        </div>
-        <img class="server-icons" src="${this.properties.icon}"hidden/>
+          </div>
+          <img class="server-icons" src="${this.properties.icon}" hidden />
         </div>
         <div class="server-tab-shortcut">${this.generateShortcutText()}</div>
       </div>
@@ -85,7 +90,7 @@ export default class ServerTab extends Tab {
     this.$icon.src = icon;
   }
 
-  showIcon(show : boolean):void{
+  showIcon(show: boolean): void {
     this.$icon.hidden = !show;
     this.$altIcon.hidden = show;
   }
