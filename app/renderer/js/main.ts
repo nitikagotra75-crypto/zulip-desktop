@@ -434,10 +434,10 @@ export class ServerManagerView {
   }
 
   initServerActions(): void {
-    for(const [index , tab] of this.tabs.entries()){
-      if(tab instanceof ServerTab){
-        this.addContextMenu(tab.$icon,index);
-        this.addContextMenu(tab.$altIcon,index);
+      for (const [index, tab] of this.tabs.entries()) {
+      if (tab instanceof ServerTab) {
+        this.addContextMenu(tab.$icon, index);
+        this.addContextMenu(tab.$altIcon, index);
       }
     }
   }
